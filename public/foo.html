@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="js/two.js/build/two.min.js"></script>
+  <script src="js/long-press-event/dist/long-press-event.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- <script type="module" src="http://localhost:3000/public/lewit.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.6.1/randomColor.min.js" integrity="sha512-vPeZ7JCboHcfpqSx5ZD+/jpEhS4JpXxfz9orSvAPPj0EKUVShU2tgy7XkU+oujBJKnWmu4hU7r9MMQNWPfXsYw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module" src="/public/lewit.js"></script>
+</head>
+<body>
+  <block_0 data-long-press-delay="800" style="background-color: blue">HELLO</block_0>
+  <!-- <block_1 style="position: absolute; left: 25vw; top: 25vh; width: 50vw; height: 50vh; background-color: #ff69b4b3">AHOY!</block_1> -->
+  <script>
+      console.log(chroma);
+      console.log(chroma('#D4F880').darken().hex());
+      // var randomColor = require('randomcolor');
+      var color = randomColor();
+      console.log(color);
+    class Rectangle {
+      longPressHandling = false;
+      twoRect;
+      twoJS;
+      tList = new Array(); // {top, left, width, height, color}
+      constructor(top, left, width, height, twoJS) {
+        this.height = height;
+        this.width = width;
+        this.centerY = top + height / 2;
+        this.centerX = left + width / 2;
+        this.top = top;
+        this.left = left;
+        this.longPressHandling = false;
+        this.longPressEventHandler = this.longPressEventHandler.bind(this);
+        this.clickEventHandler = this.clickEventHandler.bind(this);
+        //this.createTwoRect = this.createTwoRect.bind(this);
+        this.twoJS = twoJS;
+        console.log(this.centerX, this.centerY, this.top, this.left, this.width, this.height);
+      }
+
+      createTwoRect(twoThing) {
+        console.log(this.centerX);
+        this.twoJS = twoThing;
+        this.twoRect = twoThing.makeRectangle(this.centerX, this.centerY, this.width, this.height);
+        console.log(this.twoRect);
+        return this.twoRect;
+        //console.log(twoThing);
+      }
+
+      splitVert() {
+        console.log(this.twoRect.width);
+        var tmpW = this.twoRect.width;
+        this.twoRect.width /= 2;
+        this.twoRect.position.x -= this.twoRect.width / 2;
+      }
+
+      createTwoRectRight() {
+        console.log(this.twoRect.width);
+        var newTop = this.twoRect.position.y - this.twoRect.height / 2;
+        
+        var newLeft = this.twoRect.position.x + this.twoRect.width/2; //this.twoRect.position.x - 200;
+        var newWidth = this.twoRect.width;
+        var newHeight = this.twoRect.height;
+        console.log(newTop, newLeft, newWidth, newHeight, this.twoRect);
+        var newRect = new Rectangle(newTop, newLeft, newWidth, newHeight, this.twoJS);
+        // console.log(newRect);
+        var newRect_g = newRect.createTwoRect(this.twoJS); //this.twoJS.makeRectangle(newCenterX+100, newCenterY, newWidth+100, newHeight);
+        newRect_g.fill = chroma(randomColor()).hex();
+        console.log(newRect, newRect_g);
+
+        this.twoJS.update();
+
+        newRect_g._renderer.elem.addEventListener('long-press', 
+        function(event){ 
+          newRect.longPressEventHandler(event, newRect) 
+        });
+
+
+
+        return {newRect, newRect_g};
+      }
+
+      longPressEventHandler(event, rect) {
+        console.log("LONG PRESS");
+        console.log(this.twoRect.width);
+        //console.log(event);
+        this.longPressHandling = true;
+        //console.log("LP-->"+this.longPressHandling);
+        //console.log(this);
+        this.splitVert();
+        this.createTwoRectRight();
+
+        //this.twoJS.update();
+        //this.twoRect.position.y -= this.height / 4;
+        //this.twoRect.fill = chroma(randomColor()).darken().hex();
+      }
+
+      clickEventHandler(event) {
+        console.log("C==>"+this.longPressHandling);
+        if (this.longPressHandling === true) {
+          this.longPressHandling = false;
+          return;
+        }
+        console.log("CLICK--"+this.longPressHandling);
+        console.log(this);
+        
+    }
+  }
+    // function longPressEventHandler(event, rect) {
+    //   console.log("LOOOON PRESS");
+    //   console.log(event);
+    // }
+
+    // function clickEventHandler(event) {
+    //   console.log(event);
+    // }
+    
+    var two = new Two({
+      fullscreen: true,
+      autostart: true
+    }).appendTo(document.querySelector('block_0'));
+    var rect = two.makeRectangle(two.width / 2, two.height / 2, two.width / 2 ,two.height / 2);
+    
+    two.bind('update', function() {
+      rect.rotation += 0.002;
+      //rect.width -= 0.1;
+    });
+    //document.createElement('div');
+
+    var rect_01 = new Rectangle(50, 50, 500, 500);
+    var foo = rect_01.createTwoRect(two);
+    foo.fill = chroma(randomColor()).darken().hex();//'transparent';
+    rect_01.twoRect = foo;
+    //rect_01.twoJS = two;
+    two.bind('update', function() {
+      //foo.rotation -= 0.001;
+      // foo.width -= 0.2;
+      // if (foo.width <= 50) {
+      //   foo.width = rect_01.width;
+      // }
+
+    })
+
+    two.update();
+
+
+    //foo._renderer.elem.addEventListener('long-press', rect_01.longPressEventHandler, true);
+    foo._renderer.elem.addEventListener('mouseup', rect_01.clickEventHandler, true);
+    foo._renderer.elem.addEventListener('long-press', function(event){ rect_01.longPressEventHandler(event, rect_01) });
+    console.log(rect_01);
+    console.log(foo);
+
+  </script>
+</body>
+</html>
