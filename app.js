@@ -2,7 +2,7 @@
 
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
-const fastify = require('fastify')()
+//const fastify = require('fastify')()
 const fastifyStatic = require('fastify-static')
 
 module.exports = async function (fastify, opts) {
