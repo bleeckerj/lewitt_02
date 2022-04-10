@@ -7,15 +7,15 @@ const fastifyStatic = require('fastify-static')
 const fastify = require('fastify')({
   logger: true
 })
-const start = async () => {
-  try {
-    await fastify.listen()
-  } catch (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-}
-start()
+// const start = async () => {
+//   try {
+//     await fastify.listen()
+//   } catch (err) {
+//     fastify.log.error(err)
+//     process.exit(1)
+//   }
+// }
+// start()
 // Run the server!
 // fastify.listen(3001, function (err, address) {
 //   if (err) {
@@ -39,10 +39,10 @@ module.exports = async function (fastify, opts) {
   
   // This loads all plugins defined in routes
   // define your routes in one of these
-  // fastify.register(AutoLoad, {
-  //   dir: path.join(__dirname, 'routes'),
-  //   options: Object.assign({}, opts)
-  // })
+  fastify.register(AutoLoad, {
+    dir: path.join(__dirname, 'routes'),
+    options: Object.assign({}, opts)
+  })
   
 
   fastify.register(fastifyStatic, {
