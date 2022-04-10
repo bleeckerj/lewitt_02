@@ -39,10 +39,10 @@ module.exports = async function (fastify, opts) {
   
   // This loads all plugins defined in routes
   // define your routes in one of these
-  fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'routes'),
-    options: Object.assign({}, opts)
-  })
+  // fastify.register(AutoLoad, {
+  //   dir: path.join(__dirname, 'routes'),
+  //   options: Object.assign({}, opts)
+  // })
   
 
   fastify.register(fastifyStatic, {
@@ -82,12 +82,12 @@ module.exports = async function (fastify, opts) {
     reply.sendFile('foo.html')
   })
   
-  fastify.get('/another/path', function (req, reply) {
-    return reply.sendFile('myHtml.html') // serving path.join(__dirname, 'public', 'myHtml.html') directly
-  })
+  // fastify.get('/another/path', function (req, reply) {
+  //   return reply.sendFile('myHtml.html') // serving path.join(__dirname, 'public', 'myHtml.html') directly
+  // })
   
-  fastify.get('/path/with/different/root', function (req, reply) {
-    return reply.sendFile('myHtml.html', path.join(__dirname, 'build')) // serving a file from a different root location
-  })
+  // fastify.get('/path/with/different/root', function (req, reply) {
+  //   return reply.sendFile('myHtml.html', path.join(__dirname, 'build')) // serving a file from a different root location
+  // })
   
 }
