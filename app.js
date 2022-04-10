@@ -53,11 +53,11 @@ module.exports = async function (fastify, opts) {
   })
 
 
-  fastify.register(fastifyStatic, {
-    root: path.join(__dirname, 'wtf'),
-    prefix: '/wtf/', // optional: default '/'
-    decorateReply: false // the reply decorator has been added by the first plugin registration
-  })
+  // fastify.register(fastifyStatic, {
+  //   root: path.join(__dirname, 'wtf'),
+  //   prefix: '/wtf/', // optional: default '/'
+  //   decorateReply: false // the reply decorator has been added by the first plugin registration
+  // })
 
   fastify.register(fastifyStatic, {
     root: path.join(__dirname, 'node_modules'),
