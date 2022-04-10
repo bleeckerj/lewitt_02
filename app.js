@@ -2,9 +2,28 @@
 
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
-//const fastify = require('fastify')()
 const fastifyStatic = require('fastify-static')
 
+const fastify = require('fastify')({
+  logger: true
+})
+const start = async () => {
+  try {
+    await fastify.listen()
+  } catch (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+}
+start()
+// Run the server!
+// fastify.listen(3001, function (err, address) {
+//   if (err) {
+//     fastify.log.error(err)
+//     process.exit(1)
+//   }
+//   // Server is now listening on ${address}
+// })
 module.exports = async function (fastify, opts) {
   // Place here your custom code!
   
@@ -59,7 +78,7 @@ module.exports = async function (fastify, opts) {
     reply.sendFile('lewit.js')
   })
 
-  fastify.get('/foo', (request, reply) => {
+  fastify.get('/', (request, reply) => {
     reply.sendFile('foo.html')
   })
   
